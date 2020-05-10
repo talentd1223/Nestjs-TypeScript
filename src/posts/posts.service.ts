@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import CreatePostDto from './dto/createPost.dto';
 import Post from './post.interface';
 import UpdatePostDto from './dto/updatePost.dto';
@@ -17,7 +17,7 @@ export default class PostsService {
     if (post) {
       return post;
     }
-    throw new Error('Post not found');
+    throw new HttpException('Post not found', HttpStatus.NOT_FOUND);
   }
 
   replacePost(id: number, post: UpdatePostDto) {
@@ -26,7 +26,7 @@ export default class PostsService {
       this.posts[postIndex] = post;
       return post;
     }
-    throw new Error('Post not found');
+    throw new HttpException('Post not found', HttpStatus.NOT_FOUND);
   }
 
   createPost(post: CreatePostDto) {
@@ -43,7 +43,7 @@ export default class PostsService {
     if (postIndex > -1) {
       this.posts.splice(postIndex, 1);
     } else {
-      throw new Error('Post not found');
+      throw new HttpException('Post not found', HttpStatus.NOT_FOUND);
     }
   }
 }
