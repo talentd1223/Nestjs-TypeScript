@@ -30,11 +30,11 @@ export default class PostsService {
     return newPost;
   }
 
-  async replacePost(id: number, post: UpdatePostDto) {
+  async updatePost(id: number, post: UpdatePostDto) {
     await this.postsRepository.update(id, post);
     const updatedPost = await this.postsRepository.findOne(id);
     if (updatedPost) {
-      return post
+      return updatedPost
     }
     throw new HttpException('Post not found', HttpStatus.NOT_FOUND);
   }
