@@ -3,7 +3,6 @@ import { UsersService } from '../users/users.service';
 import RegisterDto from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
 import PostgresErrorCode from '../database/postgresErrorCode.enum';
-import LogInDto from './dto/logIn.dto';
 
 @Injectable()
 export class AuthenticationService {
