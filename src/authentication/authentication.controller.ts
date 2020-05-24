@@ -1,4 +1,4 @@
-import { Body, Req, Controller, HttpCode, Post, UseGuards, Res } from '@nestjs/common';
+import { Body, Req, Controller, HttpCode, Post, UseGuards, Res, Get } from '@nestjs/common';
 import { Response } from 'express';
 import { AuthenticationService } from './authentication.service';
 import RegisterDto from './dto/register.dto';
@@ -33,5 +33,13 @@ export class AuthenticationController {
   async logOut(@Res() response: Response) {
     response.setHeader('Set-Cookie', this.authenticationService.getCookieForLogOut());
     return response.sendStatus(200);
+  }
+
+  @UseGuards(JwtAuthenticationGuard)
+  @Get()
+  authenticate(@Req() request: RequestWithUser) {
+    const user = request.user;
+    user.password = undefined;
+    return user;
   }
 }
