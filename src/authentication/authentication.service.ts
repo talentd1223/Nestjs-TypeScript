@@ -2,7 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UsersService } from '../users/users.service';
 import RegisterDto from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
-import PostgresErrorCodes from '../database/PostgresErrorCodes.enum';
+import PostgresErrorCode from '../database/postgresErrorCode.enum';
 import LogInDto from './dto/logIn.dto';
 
 @Injectable()
@@ -21,7 +21,7 @@ export class AuthenticationService {
       createdUser.password = undefined;
       return createdUser;
     } catch (error) {
-      if (error?.code === PostgresErrorCodes.UniqueViolation) {
+      if (error?.code === PostgresErrorCode.UniqueViolation) {
         throw new HttpException('User with that email already exists', HttpStatus.BAD_REQUEST);
       }
       throw new HttpException('Something went wrong', HttpStatus.INTERNAL_SERVER_ERROR);
@@ -31,18 +31,21 @@ export class AuthenticationService {
   public async logIn(logInData: LogInDto) {
     try {
       const user = await this.usersService.getByEmail(logInData.email);
-      const isPasswordMatching = await bcrypt.compare(
-        logInData.password,
-        user.password
-      );
-      if (!isPasswordMatching) {
-        return new HttpException('Wrong credentials provided', HttpStatus.BAD_REQUEST);
-      }
+      await this.verifyPassword(logInData.password, user.password);
       user.password = undefined;
       return user;
+    } catch (error) {
+      throw new HttpException('Wrong credentials provided', HttpStatus.BAD_REQUEST);
     }
-    catch (error) {
-      return new HttpException('Wrong credentials provided', HttpStatus.BAD_REQUEST);
+  }
+
+  private async verifyPassword(plainText: string, hash: string) {
+    const isPasswordMatching = await bcrypt.compare(
+      plainText,
+      hash
+    );
+    if (!isPasswordMatching) {
+      throw new HttpException('Wrong credentials provided', HttpStatus.BAD_REQUEST);
     }
   }
 }
