@@ -3,11 +3,16 @@ import { UsersService } from '../users/users.service';
 import RegisterDto from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
 import PostgresErrorCode from '../database/postgresErrorCode.enum';
+import { JwtService } from '@nestjs/jwt';
+import { ConfigService } from '@nestjs/config';
+import TokenPayload from './tokenPayload.interface';
 
 @Injectable()
 export class AuthenticationService {
   constructor(
-    private readonly usersService: UsersService
+    private readonly usersService: UsersService,
+    private readonly jwtService: JwtService,
+    private readonly configService: ConfigService
   ) {}
 
   public async register(registrationData: RegisterDto) {
@@ -27,11 +32,16 @@ export class AuthenticationService {
     }
   }
 
+  public getCookieWithJwtToken(userId: number) {
+    const payload: TokenPayload = { userId };
+    const token = this.jwtService.sign(payload);
+    return `Authorization=${token}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_EXPIRATION_TIME')}`;
+  }
+
   public async getAuthenticatedUser(email: string, plainTextPassword: string) {
     try {
       const user = await this.usersService.getByEmail(email);
       await this.verifyPassword(plainTextPassword, user.password);
-      user.password = undefined;
       return user;
     } catch (error) {
       throw new HttpException('Wrong credentials provided', HttpStatus.BAD_REQUEST);
