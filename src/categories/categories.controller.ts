@@ -6,7 +6,6 @@ import {
   Param,
   Patch,
   UseGuards,
-  Req,
   UseInterceptors,
   ClassSerializerInterceptor, Post,
 } from '@nestjs/common';
@@ -15,7 +14,6 @@ import CreateCategoryDto from './dto/createCategory.dto';
 import UpdateCategoryDto from './dto/updateCategory.dto';
 import JwtAuthenticationGuard from '../authentication/jwt-authentication.guard';
 import FindOneParams from '../utils/findOneParams';
-import RequestWithUser from '../authentication/requestWithUser.interface';
 
 @Controller('categories')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -36,8 +34,8 @@ export default class CategoriesController {
 
   @Post()
   @UseGuards(JwtAuthenticationGuard)
-  async createCategory(@Body() category: CreateCategoryDto, @Req() req: RequestWithUser) {
-    return this.categoriesService.createCategory(category, req.user);
+  async createCategory(@Body() category: CreateCategoryDto) {
+    return this.categoriesService.createCategory(category);
   }
 
   @Patch(':id')

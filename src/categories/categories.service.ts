@@ -14,11 +14,11 @@ export default class CategoriesService {
   ) {}
 
   getAllCategories() {
-    return this.categoriesRepository.find();
+    return this.categoriesRepository.find({ relations: ['posts'] });
   }
 
   async getCategoryById(id: number) {
-    const category = await this.categoriesRepository.findOne(id);
+    const category = await this.categoriesRepository.findOne(id, { relations: ['posts'] });
     if (category) {
       return category;
     }
@@ -33,7 +33,7 @@ export default class CategoriesService {
 
   async updateCategory(id: number, category: UpdateCategoryDto) {
     await this.categoriesRepository.update(id, category);
-    const updatedCategory = await this.categoriesRepository.findOne(id, { relations: ['author'] });
+    const updatedCategory = await this.categoriesRepository.findOne(id, { relations: ['posts'] });
     if (updatedCategory) {
       return updatedCategory
     }
