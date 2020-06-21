@@ -47,7 +47,7 @@ export default class PostsService {
   async deletePost(id: number) {
     const deleteResponse = await this.postsRepository.delete(id);
     if (!deleteResponse.affected) {
-      throw new PostNotFoundException(id);;
+      throw new PostNotFoundException(id);
     }
   }
 }
