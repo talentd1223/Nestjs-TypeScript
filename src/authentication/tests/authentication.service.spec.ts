@@ -1,17 +1,17 @@
 import { AuthenticationService } from '../authentication.service';
 import { Test } from '@nestjs/testing';
-import { UsersModule } from '../../users/users.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
-import { DatabaseModule } from '../../database/database.module';
 import * as Joi from '@hapi/joi';
+import { getRepositoryToken } from '@nestjs/typeorm';
+import User from '../../users/user.entity';
+import { UsersService } from '../../users/users.service';
 
 describe('The AuthenticationService', () => {
   let authenticationService: AuthenticationService;
   beforeEach(async () => {
     const module = await Test.createTestingModule({
       imports: [
-        UsersModule,
         ConfigModule.forRoot({
           validationSchema: Joi.object({
             POSTGRES_HOST: Joi.string().required(),
@@ -24,7 +24,6 @@ describe('The AuthenticationService', () => {
             PORT: Joi.number(),
           })
         }),
-        DatabaseModule,
         JwtModule.registerAsync({
           imports: [ConfigModule],
           inject: [ConfigService],
@@ -37,7 +36,12 @@ describe('The AuthenticationService', () => {
         }),
       ],
       providers: [
-        AuthenticationService
+        UsersService,
+        AuthenticationService,
+        {
+          provide: getRepositoryToken(User),
+          useValue: {},
+        }
       ],
     }).compile();
     authenticationService = await module.get<AuthenticationService>(AuthenticationService);
