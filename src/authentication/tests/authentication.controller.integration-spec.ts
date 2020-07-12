@@ -48,31 +48,33 @@ describe('The AuthenticationController', () => {
     app.useGlobalPipes(new ValidationPipe());
     await app.init();
   })
-  describe('when registering with valid data', () => {
-    it('should respond with the data of the user without the password', () => {
-      const expectedData = {
-        ...userData
-      }
-      delete expectedData.password;
-      return request(app.getHttpServer())
-        .post('/authentication/register')
-        .send({
-          email: mockedUser.email,
-          name: mockedUser.name,
-          password: 'strongPassword'
-        })
-        .expect(201)
-        .expect(expectedData);
+  describe('when registering', () => {
+    describe('and using valid data', () => {
+      it('should respond with the data of the user without the password', () => {
+        const expectedData = {
+          ...userData
+        }
+        delete expectedData.password;
+        return request(app.getHttpServer())
+          .post('/authentication/register')
+          .send({
+            email: mockedUser.email,
+            name: mockedUser.name,
+            password: 'strongPassword'
+          })
+          .expect(201)
+          .expect(expectedData);
+      })
     })
-  })
-  describe('when registering with invalid data', () => {
-    it('should throw an error', () => {
-      return request(app.getHttpServer())
-        .post('/authentication/register')
-        .send({
-          name: mockedUser.name
-        })
-        .expect(400)
+    describe('and using invalid data', () => {
+      it('should throw an error', () => {
+        return request(app.getHttpServer())
+          .post('/authentication/register')
+          .send({
+            name: mockedUser.name
+          })
+          .expect(400)
+      })
     })
   })
 });
