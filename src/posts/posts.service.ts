@@ -42,7 +42,8 @@ export default class PostsService {
     await this.postsRepository.update(id, post);
     const updatedPost = await this.postsRepository.findOne(id, { relations: ['author'] });
     if (updatedPost) {
-      return updatedPost
+      await this.postsSearchService.update(updatedPost);
+      return updatedPost;
     }
     throw new PostNotFoundException(id);
   }
@@ -52,6 +53,7 @@ export default class PostsService {
     if (!deleteResponse.affected) {
       throw new PostNotFoundException(id);
     }
+    await this.postsSearchService.remove(id);
   }
 
   async searchForPosts(text: string) {
