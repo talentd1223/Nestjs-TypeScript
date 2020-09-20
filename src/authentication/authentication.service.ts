@@ -54,8 +54,11 @@ export class AuthenticationService {
     }
   }
 
-  public getCookieForLogOut() {
-    return `Authentication=; HttpOnly; Path=/; Max-Age=0`;
+  public getCookiesForLogOut() {
+    return [
+      'Authentication=; HttpOnly; Path=/; Max-Age=0',
+      'Refresh=; HttpOnly; Path=/; Max-Age=0'
+    ];
   }
 
   public async getAuthenticatedUser(email: string, plainTextPassword: string) {
