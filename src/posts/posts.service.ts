@@ -16,12 +16,20 @@ export default class PostsService {
     private postsSearchService: PostsSearchService
   ) {}
 
-  getAllPosts(offset?: number, limit?: number) {
-    return this.postsRepository.find({
+  async getAllPosts(offset?: number, limit?: number) {
+    const [items, count] = await this.postsRepository.findAndCount({
       relations: ['author'],
+      order: {
+        id: 'ASC'
+      },
       skip: offset,
       take: limit
     });
+
+    return {
+      items,
+      count
+    }
   }
 
   async getPostById(id: number) {
