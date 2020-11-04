@@ -69,14 +69,21 @@ export default class PostsService {
   }
 
   async searchForPosts(text: string, offset?: number, limit?: number) {
-    const results = await this.postsSearchService.search(text);
+    const { results, count } = await this.postsSearchService.search(text, offset, limit);
     const ids = results.map(result => result.id);
     if (!ids.length) {
-      return [];
+      return {
+        items: [],
+        count
+      }
     }
-    return this.postsRepository
+    const items = await this.postsRepository
       .find({
         where: { id: In(ids) }
       });
+    return {
+      items,
+      count
+    }
   }
 }
