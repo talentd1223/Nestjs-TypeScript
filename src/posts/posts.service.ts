@@ -16,8 +16,12 @@ export default class PostsService {
     private postsSearchService: PostsSearchService
   ) {}
 
-  getAllPosts() {
-    return this.postsRepository.find({ relations: ['author'] });
+  getAllPosts(offset?: number, limit?: number) {
+    return this.postsRepository.find({
+      relations: ['author'],
+      skip: offset,
+      take: limit
+    });
   }
 
   async getPostById(id: number) {
@@ -56,7 +60,7 @@ export default class PostsService {
     await this.postsSearchService.remove(id);
   }
 
-  async searchForPosts(text: string) {
+  async searchForPosts(text: string, offset?: number, limit?: number) {
     const results = await this.postsSearchService.search(text);
     const ids = results.map(result => result.id);
     if (!ids.length) {
