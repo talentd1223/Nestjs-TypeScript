@@ -7,6 +7,7 @@ import { Repository, In } from 'typeorm';
 import PostNotFoundException from './exceptions/postNotFound.exception';
 import User from '../users/user.entity';
 import PostsSearchService from './postsSearch.service';
+import { MoreThan, FindManyOptions } from 'typeorm';
 
 @Injectable()
 export default class PostsService {
@@ -16,8 +17,16 @@ export default class PostsService {
     private postsSearchService: PostsSearchService
   ) {}
 
-  async getAllPosts(offset?: number, limit?: number) {
+  async getAllPosts(offset?: number, limit?: number, startId?: number) {
+    const where: FindManyOptions<Post>['where'] = {};
+    let separateCount = 0;
+    if (startId) {
+      where.id = MoreThan(startId);
+      separateCount = await this.postsRepository.count();
+    }
+
     const [items, count] = await this.postsRepository.findAndCount({
+      where,
       relations: ['author'],
       order: {
         id: 'ASC'
@@ -28,7 +37,7 @@ export default class PostsService {
 
     return {
       items,
-      count
+      count: startId ? separateCount : count
     }
   }
 
