@@ -77,8 +77,8 @@ export default class PostsService {
     await this.postsSearchService.remove(id);
   }
 
-  async searchForPosts(text: string, offset?: number, limit?: number) {
-    const { results, count } = await this.postsSearchService.search(text, offset, limit);
+  async searchForPosts(text: string, offset?: number, limit?: number, startId?: number) {
+    const { results, count } = await this.postsSearchService.search(text, offset, limit, startId);
     const ids = results.map(result => result.id);
     if (!ids.length) {
       return {

@@ -33,7 +33,7 @@ export default class PostsController {
     @Query() { offset, limit, startId }: PaginationParams
   ) {
     if (search) {
-      return this.postsService.searchForPosts(search, offset, limit);
+      return this.postsService.searchForPosts(search, offset, limit, startId);
     }
     return this.postsService.getAllPosts(offset, limit, startId);
   }
