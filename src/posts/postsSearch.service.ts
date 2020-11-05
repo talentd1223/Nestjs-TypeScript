@@ -25,6 +25,21 @@ export default class PostsSearchService {
     })
   }
 
+  async count(query: string, fields: string[]) {
+    const { body } = await this.elasticsearchService.count<PostCountResult>({
+      index: this.index,
+      body: {
+        query: {
+          multi_match: {
+            query,
+            fields
+          }
+        }
+      }
+    })
+    return body.count;
+  }
+
   async search(
     text: string,
     offset?: number,
@@ -33,18 +48,7 @@ export default class PostsSearchService {
   ) {
     let separateCount = 0;
     if (startId) {
-      const { body } = await this.elasticsearchService.count<PostCountResult>({
-        index: this.index,
-        body: {
-          query: {
-            multi_match: {
-              query: text,
-              fields: ['title', 'paragraphs']
-            }
-          }
-        }
-      })
-      separateCount = body.count;
+      separateCount = await this.count(text, ['title', 'paragraphs']);
     }
     const { body } = await this.elasticsearchService.search<PostSearchResult>({
       index: this.index,
