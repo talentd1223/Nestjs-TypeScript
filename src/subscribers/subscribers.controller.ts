@@ -22,7 +22,7 @@ export default class SubscribersController {
   async getSubscribers() {
     return this.subscribersService.send({
       cmd: 'get-all-subscribers'
-    }, undefined)
+    }, '')
   }
 
   @Post()
