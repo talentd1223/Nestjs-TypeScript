@@ -21,7 +21,7 @@ import { ClientProxyFactory, Transport } from '@nestjs/microservices';
             urls: [`amqp://${user}:${password}@${host}`],
             queue: queueName,
             queueOptions: {
-              durable: false,
+              durable: true,
             },
           },
         })
