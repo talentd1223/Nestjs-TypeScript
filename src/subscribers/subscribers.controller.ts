@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common';
 import JwtAuthenticationGuard from '../authentication/jwt-authentication.guard';
 import CreateSubscriberDto from './dto/createSubscriber.dto';
-import { ClientGrpc, ClientProxy } from '@nestjs/microservices';
+import { ClientGrpc } from '@nestjs/microservices';
 import SubscribersService from './subscribers.service.interface';
 
 @Controller('subscribers')
@@ -25,7 +25,7 @@ export default class SubscribersController implements OnModuleInit {
 
   @Get()
   async getSubscribers() {
-    return this.subscribersService.getAllSubscribers();
+    return this.subscribersService.getAllSubscribers({});
   }
 
   @Post()
