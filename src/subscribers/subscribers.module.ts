@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import SubscribersController from './subscribers.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { ClientProxyFactory, ClientsModule, Transport } from '@nestjs/microservices';
+import { ClientProxyFactory, Transport } from '@nestjs/microservices';
 import { join } from "path";
 
 @Module({
@@ -15,7 +15,8 @@ import { join } from "path";
           transport: Transport.GRPC,
           options: {
             package: 'subscribers',
-            protoPath: join(process.cwd(), 'src/subscribers/subscribers.proto')
+            protoPath: join(process.cwd(), 'src/subscribers/subscribers.proto'),
+            url: configService.get('GRPC_CONNECTION_URL')
           },
         })
       },
