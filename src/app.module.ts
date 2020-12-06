@@ -8,6 +8,7 @@ import { UsersModule } from './users/users.module';
 import { CategoriesModule } from './categories/categories.module';
 import { SearchModule } from './search/search.module';
 import { SubscribersModule } from './subscribers/subscribers.module';
+import { CommentsModule } from './comments/comments.module';
 
 @Module({
   imports: [
@@ -41,7 +42,8 @@ import { SubscribersModule } from './subscribers/subscribers.module';
     UsersModule,
     CategoriesModule,
     SearchModule,
-    SubscribersModule
+    SubscribersModule,
+    CommentsModule
   ],
   controllers: [],
   providers: [],
