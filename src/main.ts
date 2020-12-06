@@ -8,7 +8,9 @@ import { config } from 'aws-sdk';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.useGlobalPipes(new ValidationPipe({
+    transform: true
+  }));
   app.useGlobalInterceptors(new ExcludeNullInterceptor());
   app.use(cookieParser());
 

@@ -1,12 +1,15 @@
-import { IsString, IsNotEmpty } from 'class-validator';
-import Post from '../../posts/post.entity';
+import { IsString, IsNotEmpty, ValidateNested } from 'class-validator';
+import { Type } from 'class-transformer';
+import ObjectWithIdDTO from 'src/utils/types/objectWithId.dto';
 
 export class CreateCommentDto {
   @IsString()
   @IsNotEmpty()
   content: string;
 
-  post: Post;
+  @ValidateNested()
+  @Type(() => ObjectWithIdDTO)
+  post: ObjectWithIdDTO;
 }
 
 export default CreateCommentDto;
