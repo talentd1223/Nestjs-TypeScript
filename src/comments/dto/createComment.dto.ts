@@ -2,7 +2,7 @@ import { IsString, IsNotEmpty, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 import ObjectWithIdDTO from 'src/utils/types/objectWithId.dto';
 
-export class CreateCommentDto {
+class CreateCommentDto {
   @IsString()
   @IsNotEmpty()
   content: string;
