@@ -15,9 +15,9 @@ export default class ProductsService {
     return this.productsRepository.find();
   }
 
-  async createProduct(category: CreateProductDto) {
-    const newCategory = await this.productsRepository.create(category);
-    await this.productsRepository.save(newCategory);
-    return newCategory;
+  async createProduct(product: CreateProductDto) {
+    const newProduct = await this.productsRepository.create(product);
+    await this.productsRepository.save(newProduct);
+    return newProduct;
   }
 }
