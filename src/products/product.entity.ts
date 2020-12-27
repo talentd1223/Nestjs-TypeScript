@@ -1,5 +1,7 @@
 import { Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 import ProductCategory from '../productCategories/productCategory.entity';
+import { CarProperties } from './types/carProperties.interface';
+import { BookProperties } from './types/bookProperties.interface';
 
 @Entity()
 class Product {
@@ -15,7 +17,7 @@ class Product {
   @Column({
     type: 'jsonb'
   })
-  public properties: any;
+  public properties: CarProperties | BookProperties;
 }
 
 export default Product;

@@ -10,7 +10,7 @@ import JwtAuthenticationGuard from '../authentication/jwt-authentication.guard';
 import CreateProductDto from './dto/createProduct.dto';
 import ProductsService from './products.service';
 
-@Controller('categories')
+@Controller('products')
 @UseInterceptors(ClassSerializerInterceptor)
 export default class ProductsController {
   constructor(
