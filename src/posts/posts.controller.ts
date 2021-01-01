@@ -10,7 +10,7 @@ import {
   Req,
   UseInterceptors,
   ClassSerializerInterceptor,
-  Query,
+  Query, CacheInterceptor,
 } from '@nestjs/common';
 import PostsService from './posts.service';
 import CreatePostDto from './dto/createPost.dto';
@@ -27,6 +27,7 @@ export default class PostsController {
     private readonly postsService: PostsService
   ) {}
 
+  @UseInterceptors(CacheInterceptor)
   @Get()
   async getPosts(
     @Query('search') search: string,
