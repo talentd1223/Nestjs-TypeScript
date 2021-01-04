@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
 import CreatePostDto from './dto/createPost.dto';
 import Post from './post.entity';
 import UpdatePostDto from './dto/updatePost.dto';
@@ -8,14 +8,26 @@ import PostNotFoundException from './exceptions/postNotFound.exception';
 import User from '../users/user.entity';
 import PostsSearchService from './postsSearch.service';
 import { MoreThan, FindManyOptions } from 'typeorm';
+import { Cache } from 'cache-manager';
+import { GET_POSTS_CACHE_KEY } from './postsCacheKey.constant';
 
 @Injectable()
 export default class PostsService {
   constructor(
     @InjectRepository(Post)
     private postsRepository: Repository<Post>,
-    private postsSearchService: PostsSearchService
+    private postsSearchService: PostsSearchService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {}
+
+  async clearCache() {
+    const keys: string[] = await this.cacheManager.store.keys();
+    keys.forEach((key) => {
+      if (key.startsWith(GET_POSTS_CACHE_KEY)) {
+        this.cacheManager.del(key);
+      }
+    })
+  }
 
   async getAllPosts(offset?: number, limit?: number, startId?: number) {
     const where: FindManyOptions<Post>['where'] = {};
@@ -56,6 +68,7 @@ export default class PostsService {
     });
     await this.postsRepository.save(newPost);
     this.postsSearchService.indexPost(newPost);
+    await this.clearCache();
     return newPost;
   }
 
@@ -64,6 +77,7 @@ export default class PostsService {
     const updatedPost = await this.postsRepository.findOne(id, { relations: ['author'] });
     if (updatedPost) {
       await this.postsSearchService.update(updatedPost);
+      await this.clearCache();
       return updatedPost;
     }
     throw new PostNotFoundException(id);
@@ -75,6 +89,7 @@ export default class PostsService {
       throw new PostNotFoundException(id);
     }
     await this.postsSearchService.remove(id);
+    await this.clearCache();
   }
 
   async searchForPosts(text: string, offset?: number, limit?: number, startId?: number) {

@@ -8,7 +8,9 @@ import PostsSearchService from './postsSearch.service';
 
 @Module({
   imports: [
-    CacheModule.register(),
+    CacheModule.register({
+      ttl: 120
+    }),
     TypeOrmModule.forFeature([Post]),
     SearchModule,
   ],
