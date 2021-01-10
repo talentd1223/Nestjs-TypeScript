@@ -36,7 +36,9 @@ import { ProductsModule } from './products/products.module';
         ELASTICSEARCH_PASSWORD: Joi.string(),
         SUBSCRIBERS_SERVICE_HOST: Joi.string(),
         SUBSCRIBERS_SERVICE_PORT: Joi.string(),
-        GRPC_CONNECTION_URL : Joi.string()
+        GRPC_CONNECTION_URL: Joi.string(),
+        REDIS_HOST: Joi.string().required(),
+        REDIS_PORT: Joi.number().required(),
       })
     }),
     DatabaseModule,
