@@ -21,7 +21,7 @@ export default class EmailSchedulingService {
       })
     });
 
-    this.schedulerRegistry.addCronJob(emailSchedule.subject, job);
+    this.schedulerRegistry.addCronJob(`${Date.now()}-${emailSchedule.subject}`, job);
     job.start();
   }
 }
