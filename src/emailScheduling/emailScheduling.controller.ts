@@ -2,8 +2,6 @@ import {
   Body,
   Controller,
   UseGuards,
-  UseInterceptors,
-  ClassSerializerInterceptor,
   Post,
 } from '@nestjs/common';
 import JwtAuthenticationGuard from '../authentication/jwt-authentication.guard';
@@ -11,7 +9,6 @@ import EmailSchedulingService from './emailScheduling.service';
 import EmailScheduleDto from './dto/emailSchedule.dto';
 
 @Controller('email-scheduling')
-@UseInterceptors(ClassSerializerInterceptor)
 export default class EmailSchedulingController {
   constructor(
     private readonly emailSchedulingService: EmailSchedulingService
@@ -20,6 +17,6 @@ export default class EmailSchedulingController {
   @Post('schedule')
   @UseGuards(JwtAuthenticationGuard)
   async scheduleEmail(@Body() emailSchedule: EmailScheduleDto) {
-    await this.emailSchedulingService.scheduleEmail(emailSchedule);
+    this.emailSchedulingService.scheduleEmail(emailSchedule);
   }
 }
