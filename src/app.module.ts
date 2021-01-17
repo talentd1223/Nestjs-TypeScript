@@ -11,9 +11,12 @@ import { SubscribersModule } from './subscribers/subscribers.module';
 import { CommentsModule } from './comments/comments.module';
 import { ProductCategoriesModule } from './productCategories/productCategories.module';
 import { ProductsModule } from './products/products.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { EmailSchedulingModule } from './emailScheduling/emailScheduling.module';
 
 @Module({
   imports: [
+    ScheduleModule.forRoot(),
     PostsModule,
     ConfigModule.forRoot({
       validationSchema: Joi.object({
@@ -39,6 +42,9 @@ import { ProductsModule } from './products/products.module';
         GRPC_CONNECTION_URL: Joi.string(),
         REDIS_HOST: Joi.string().required(),
         REDIS_PORT: Joi.number().required(),
+        EMAIL_SERVICE: Joi.string().required(),
+        EMAIL_USER: Joi.string().required(),
+        EMAIL_PASSWORD: Joi.string().required()
       })
     }),
     DatabaseModule,
@@ -49,7 +55,8 @@ import { ProductsModule } from './products/products.module';
     SubscribersModule,
     CommentsModule,
     ProductCategoriesModule,
-    ProductsModule
+    ProductsModule,
+    EmailSchedulingModule
   ],
   controllers: [],
   providers: [],
