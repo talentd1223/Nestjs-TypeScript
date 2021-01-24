@@ -1,4 +1,5 @@
 import {
+  ConnectedSocket,
   MessageBody, OnGatewayConnection,
   SubscribeMessage,
   WebSocketGateway,
@@ -22,7 +23,15 @@ export class ChatGateway implements OnGatewayConnection {
   }
 
   @SubscribeMessage('send_message')
-  listenForMessages(@MessageBody() data: string) {
-    this.server.sockets.emit('receive_message', data);
+  async listenForMessages(
+    @MessageBody() content: string,
+    @ConnectedSocket() socket: Socket,
+  ) {
+    const author = await this.chatService.getUserFromSocket(socket);
+
+    this.server.sockets.emit('receive_message', {
+      content,
+      author
+    });
   }
 }
