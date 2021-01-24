@@ -40,6 +40,6 @@ export class ChatGateway implements OnGatewayConnection {
     await this.chatService.getUserFromSocket(socket);
     const messages = await this.chatService.getAllMessages();
 
-    this.server.sockets.emit('send_all_messages', messages);
+    socket.emit('send_all_messages', messages);
   }
 }
