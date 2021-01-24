@@ -1,23 +1,28 @@
 import {
-  MessageBody,
+  MessageBody, OnGatewayConnection,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { Server } from 'socket.io';
+import { Server, Socket } from 'socket.io';
+import { ChatService } from './chat.service';
 
 @WebSocketGateway()
-export class ChatGateway {
+export class ChatGateway implements OnGatewayConnection {
   @WebSocketServer()
   server: Server;
 
-  @SubscribeMessage('send_message')
-  findAll(@MessageBody() data: any) {
-    this.server.sockets.emit('receive_message', data);
+  constructor(
+    private readonly chatService: ChatService
+  ) {
   }
 
-  @SubscribeMessage('initial_connection')
-  async identity(@MessageBody() data: any) {
-    return 'Hello world!';
+  async handleConnection(socket: Socket) {
+    await this.chatService.getUserFromSocket(socket);
+  }
+
+  @SubscribeMessage('send_message')
+  listenForMessages(@MessageBody() data: string) {
+    this.server.sockets.emit('receive_message', data);
   }
 }
