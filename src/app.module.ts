@@ -13,6 +13,7 @@ import { ProductCategoriesModule } from './productCategories/productCategories.m
 import { ProductsModule } from './products/products.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import { EmailSchedulingModule } from './emailScheduling/emailScheduling.module';
+import { ChatModule } from './chat/chat.module';
 
 @Module({
   imports: [
@@ -56,7 +57,8 @@ import { EmailSchedulingModule } from './emailScheduling/emailScheduling.module'
     CommentsModule,
     ProductCategoriesModule,
     ProductsModule,
-    EmailSchedulingModule
+    EmailSchedulingModule,
+    ChatModule
   ],
   controllers: [],
   providers: [],
