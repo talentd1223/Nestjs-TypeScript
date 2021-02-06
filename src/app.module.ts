@@ -16,23 +16,17 @@ import { EmailSchedulingModule } from './emailScheduling/emailScheduling.module'
 import { ChatModule } from './chat/chat.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
-import PostsLoaders from './posts/loaders/posts.loaders';
-import * as DataLoader from 'dataloader';
 
 @Module({
   imports: [
     GraphQLModule.forRootAsync({
-      imports: [ConfigModule, PostsModule],
-      inject: [ConfigService, PostsLoaders],
+      imports: [ConfigModule],
+      inject: [ConfigService],
       useFactory: (
         configService: ConfigService,
-        postsLoaders: PostsLoaders
       ) => ({
         playground: Boolean(configService.get('GRAPHQL_PLAYGROUND')),
         autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-        context: () => ({
-          batchPostAuthors: new DataLoader(postsLoaders.batchAuthors)
-        })
       })
     }),
     ScheduleModule.forRoot(),

@@ -6,12 +6,13 @@ import { UseGuards } from '@nestjs/common';
 import RequestWithUser from '../authentication/requestWithUser.interface';
 import { GraphqlJwtAuthGuard } from '../authentication/graphql-jwt-auth.guard';
 import { User } from '../users/models/user.model';
-import { GraphQLContext } from '../utils/types/GraphQLContext';
+import PostsLoaders from './loaders/posts.loaders';
 
 @Resolver(() => Post)
 export class PostsResolver {
   constructor(
     private postsService: PostsService,
+    private postsLoaders: PostsLoaders
   ) {}
 
   @Query(() => [Post])
@@ -22,12 +23,11 @@ export class PostsResolver {
 
   @ResolveField('author', () => User)
   async getAuthor(
-    @Parent() post: Post,
-    @Context() { batchPostAuthors }: GraphQLContext
+    @Parent() post: Post
   ) {
     const { authorId } = post;
 
-    return batchPostAuthors.load(authorId);
+    return this.postsLoaders.batchAuthors.load(authorId);
   }
 
   @Mutation(() => Post)

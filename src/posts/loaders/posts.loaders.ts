@@ -1,14 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Scope } from '@nestjs/common';
 import { UsersService } from '../../users/users.service';
+import * as DataLoader from 'dataloader';
 
-@Injectable()
+@Injectable({ scope: Scope.REQUEST })
 export default class PostsLoaders {
   constructor(
     private usersService: UsersService,
   ) {
   }
 
-  batchAuthors = (authorIds: number[]): Promise<any> => {
+  public readonly batchAuthors = new DataLoader((authorIds: number[]) => {
     return this.usersService.getByIds(authorIds);
-  }
+  })
 }
