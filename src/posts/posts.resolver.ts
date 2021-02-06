@@ -1,33 +1,34 @@
-import { Args, Context, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, Context, Info, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Post } from './models/post.model';
 import PostsService from './posts.service';
 import { CreatePostInput } from './inputs/post.input';
 import { UseGuards } from '@nestjs/common';
 import RequestWithUser from '../authentication/requestWithUser.interface';
 import { GraphqlJwtAuthGuard } from '../authentication/graphql-jwt-auth.guard';
-import { User } from '../users/models/user.model';
-import PostsLoaders from './loaders/posts.loaders';
+import { parseResolveInfo, ResolveTree, simplifyParsedResolveInfoFragmentWithType } from 'graphql-parse-resolve-info';
+import { GraphQLResolveInfo } from 'graphql';
 
 @Resolver(() => Post)
 export class PostsResolver {
   constructor(
-    private postsService: PostsService,
-    private postsLoaders: PostsLoaders
+    private postsService: PostsService
   ) {}
 
   @Query(() => [Post])
-  async posts() {
-    const posts = await this.postsService.getPosts();
-    return posts.items;
-  }
-
-  @ResolveField('author', () => User)
-  async getAuthor(
-    @Parent() post: Post
+  async posts(
+    @Info() info: GraphQLResolveInfo
   ) {
-    const { authorId } = post;
+    const parsedInfo = parseResolveInfo(info) as ResolveTree;
+    const simplifiedInfo = simplifyParsedResolveInfoFragmentWithType(
+      parsedInfo,
+      info.returnType
+    );
 
-    return this.postsLoaders.batchAuthors.load(authorId);
+    const posts = 'author' in simplifiedInfo.fields
+      ? await this.postsService.getPostsWithAuthors()
+      : await this.postsService.getPosts();
+
+    return posts.items;
   }
 
   @Mutation(() => Post)
