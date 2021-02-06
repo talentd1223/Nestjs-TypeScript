@@ -9,7 +9,9 @@ export default class PostsLoaders {
   ) {
   }
 
-  public readonly batchAuthors = new DataLoader((authorIds: number[]) => {
-    return this.usersService.getByIds(authorIds);
+  public readonly batchAuthors = new DataLoader(async (authorIds: number[]) => {
+    const users = await this.usersService.getByIds(authorIds);
+    const usersMap = new Map(users.map(user => [user.id, user]));
+    return authorIds.map(authorId => usersMap.get(authorId));
   })
 }

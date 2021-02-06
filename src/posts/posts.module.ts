@@ -29,6 +29,5 @@ import PostsLoaders from './loaders/posts.loaders';
   ],
   controllers: [PostsController],
   providers: [PostsService, PostsSearchService, PostsResolver, PostsLoaders],
-  exports: [PostsLoaders]
 })
 export class PostsModule {}
