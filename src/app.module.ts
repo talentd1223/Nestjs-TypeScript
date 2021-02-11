@@ -16,6 +16,7 @@ import { EmailSchedulingModule } from './emailScheduling/emailScheduling.module'
 import { ChatModule } from './chat/chat.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
+import { PubSubModule } from './pubSub/pubSub.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { join } from 'path';
       ) => ({
         playground: Boolean(configService.get('GRAPHQL_PLAYGROUND')),
         autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+        installSubscriptionHandlers: true
       })
     }),
     ScheduleModule.forRoot(),
@@ -71,7 +73,8 @@ import { join } from 'path';
     ProductCategoriesModule,
     ProductsModule,
     EmailSchedulingModule,
-    ChatModule
+    ChatModule,
+    PubSubModule
   ],
   controllers: [],
   providers: [],
