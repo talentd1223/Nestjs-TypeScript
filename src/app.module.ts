@@ -17,6 +17,7 @@ import { ChatModule } from './chat/chat.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { PubSubModule } from './pubSub/pubSub.module';
+import { Timestamp } from './utils/scalars/timestamp.scalar';
 
 @Module({
   imports: [
@@ -77,6 +78,6 @@ import { PubSubModule } from './pubSub/pubSub.module';
     PubSubModule
   ],
   controllers: [],
-  providers: [],
+  providers: [Timestamp],
 })
 export class AppModule {}
