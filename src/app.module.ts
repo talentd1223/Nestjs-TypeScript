@@ -61,7 +61,8 @@ import { Timestamp } from './utils/scalars/timestamp.scalar';
         EMAIL_SERVICE: Joi.string().required(),
         EMAIL_USER: Joi.string().required(),
         EMAIL_PASSWORD: Joi.string().required(),
-        GRAPHQL_PLAYGROUND: Joi.number()
+        GRAPHQL_PLAYGROUND: Joi.number(),
+        TWO_FACTOR_AUTHENTICATION_APP_NAME: Joi.string()
       })
     }),
     DatabaseModule,
