@@ -15,12 +15,12 @@ import {
 import PostsService from './posts.service';
 import CreatePostDto from './dto/createPost.dto';
 import UpdatePostDto from './dto/updatePost.dto';
-import JwtAuthenticationGuard from '../authentication/jwt-authentication.guard';
 import FindOneParams from '../utils/findOneParams';
 import RequestWithUser from '../authentication/requestWithUser.interface';
 import { PaginationParams } from '../utils/types/paginationParams';
 import { HttpCacheInterceptor } from './httpCache.interceptor';
 import { GET_POSTS_CACHE_KEY } from './postsCacheKey.constant';
+import JwtTwoFactorGuard from '../authentication/jwt-two-factor.guard';
 
 @Controller('posts')
 @UseInterceptors(ClassSerializerInterceptor)
@@ -49,7 +49,7 @@ export default class PostsController {
   }
 
   @Post()
-  @UseGuards(JwtAuthenticationGuard)
+  @UseGuards(JwtTwoFactorGuard)
   async createPost(@Body() post: CreatePostDto, @Req() req: RequestWithUser) {
     return this.postsService.createPost(post, req.user);
   }
