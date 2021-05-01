@@ -18,6 +18,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { join } from 'path';
 import { PubSubModule } from './pubSub/pubSub.module';
 import { Timestamp } from './utils/scalars/timestamp.scalar';
+import { OptimizeModule } from './optimize/optimize.module';
 
 @Module({
   imports: [
@@ -76,7 +77,8 @@ import { Timestamp } from './utils/scalars/timestamp.scalar';
     ProductsModule,
     EmailSchedulingModule,
     ChatModule,
-    PubSubModule
+    PubSubModule,
+    OptimizeModule
   ],
   controllers: [],
   providers: [Timestamp],
