@@ -1,16 +1,14 @@
 import {
   Controller,
   Get,
-  Param,
-  Post, Res,
-  UploadedFiles,
-  UseInterceptors,
+  Param, Post,
+  Res, UploadedFiles, UseInterceptors,
 } from '@nestjs/common';
-import { AnyFilesInterceptor } from '@nestjs/platform-express';
-import { Express, Response } from 'express';
+import { Response } from 'express';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { Readable } from 'stream';
+import { AnyFilesInterceptor } from '@nestjs/platform-express';
 
 @Controller('optimize')
 export class OptimizeController {
@@ -20,7 +18,7 @@ export class OptimizeController {
 
   @Post('image')
   @UseInterceptors(AnyFilesInterceptor())
-  async addAvatar(@UploadedFiles() files: Express.Multer.File[]) {
+  async processImage(@UploadedFiles() files: Express.Multer.File[]) {
     const job = await this.imageQueue.add('optimize', {
       files
     });
@@ -45,10 +43,6 @@ export class OptimizeController {
     }
 
     const result = Buffer.from(job.returnvalue);
-
-    if (!result) {
-      return response.sendStatus(404);
-    }
 
     const stream = Readable.from(result);
 

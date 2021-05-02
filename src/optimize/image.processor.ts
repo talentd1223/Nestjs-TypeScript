@@ -8,7 +8,7 @@ import { Express } from 'express';
 @Processor('image')
 export class ImageProcessor {
   @Process('optimize')
-  async handleTranscode(job: Job) {
+  async handleOptimization(job: Job) {
     const files: Express.Multer.File[] = job.data.files;
 
     const optimizationPromises: Promise<Buffer>[] = files.map(file => {
