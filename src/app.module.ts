@@ -19,9 +19,20 @@ import { join } from 'path';
 import { PubSubModule } from './pubSub/pubSub.module';
 import { Timestamp } from './utils/scalars/timestamp.scalar';
 import { OptimizeModule } from './optimize/optimize.module';
+import { BullModule } from '@nestjs/bull';
 
 @Module({
   imports: [
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        redis: {
+          host: configService.get('REDIS_HOST'),
+          port: Number(configService.get('REDIS_PORT')),
+        },
+      }),
+      inject: [ConfigService],
+    }),
     GraphQLModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
