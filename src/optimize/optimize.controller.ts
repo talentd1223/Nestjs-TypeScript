@@ -1,8 +1,6 @@
 import {
-  CACHE_MANAGER,
   Controller,
   Get,
-  Inject,
   Param,
   Post, Res,
   UploadedFiles,
@@ -12,14 +10,12 @@ import { AnyFilesInterceptor } from '@nestjs/platform-express';
 import { Express, Response } from 'express';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
-import { Cache } from 'cache-manager';
 import { Readable } from 'stream';
 
 @Controller('optimize')
 export class OptimizeController {
   constructor(
     @InjectQueue('image') private readonly imageQueue: Queue,
-    @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {}
 
   @Post('image')
@@ -36,14 +32,26 @@ export class OptimizeController {
 
   @Get('image/:id')
   async getJobResult(@Res() response: Response, @Param('id') id: string) {
-    const jobResult = await this.cacheManager.get(id);
+    const job = await this.imageQueue.getJob(id);
 
-    if (jobResult) {
-      const stream = Readable.from(jobResult.toBuffer());
-
-      stream.pipe(response);
+    if (!job) {
+      return response.sendStatus(404);
     }
 
-    response.sendStatus(404);
+    const isCompleted = await job.isCompleted();
+
+    if (!isCompleted) {
+      return response.sendStatus(200);
+    }
+
+    const result = Buffer.from(job.returnvalue);
+
+    if (!result) {
+      return response.sendStatus(404);
+    }
+
+    const stream = Readable.from(result);
+
+    stream.pipe(response);
   }
 }
