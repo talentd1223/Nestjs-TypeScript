@@ -3,30 +3,33 @@ import { Job } from 'bull';
 import * as AdmZip from 'adm-zip';
 import { buffer } from 'imagemin';
 import imageminPngquant from 'imagemin-pngquant';
+import { Express } from 'express';
 
 @Processor('image')
 export class ImageProcessor {
   @Process('optimize')
   async handleTranscode(job: Job) {
-    const files = job.data.files;
+    const files: Express.Multer.File[] = job.data.files;
+
+    const optimizationPromises: Promise<Buffer>[] = files.map(file => {
+      const fileBuffer = Buffer.from(file.buffer);
+      return buffer(fileBuffer, {
+        plugins: [
+          imageminPngquant({
+            quality: [0.6, 0.8]
+          })
+        ]
+      })
+    })
+
+    const optimizedImages = await Promise.all(optimizationPromises);
 
     const zip = new AdmZip();
 
-    for(const file of files) {
-      try {
-        const fileBuffer = Buffer.from(file.buffer);
-        const optimizedFile = await buffer(fileBuffer, {
-          plugins: [
-            imageminPngquant({
-              quality: [0.6, 0.8]
-            })
-          ]
-        })
-        zip.addFile(file.originalname, optimizedFile);
-      } catch (error) {
-        console.log(error);
-      }
-    }
+    optimizedImages.forEach((image, index) => {
+      const fileData = files[index];
+      zip.addFile(fileData.originalname, image);
+    })
 
     return zip.toBuffer();
   }

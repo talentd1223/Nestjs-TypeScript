@@ -41,7 +41,7 @@ export class OptimizeController {
     const isCompleted = await job.isCompleted();
 
     if (!isCompleted) {
-      return response.sendStatus(200);
+      return response.sendStatus(202);
     }
 
     const result = Buffer.from(job.returnvalue);
