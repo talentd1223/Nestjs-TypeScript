@@ -19,6 +19,11 @@ async function bootstrap() {
     region: configService.get('AWS_REGION'),
   });
 
+  app.enableCors({
+    origin: configService.get('FRONTEND_URL'),
+    credentials: true
+  });
+
   await app.listen(3000);
 }
 bootstrap();

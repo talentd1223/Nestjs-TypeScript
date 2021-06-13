@@ -20,6 +20,7 @@ import { PubSubModule } from './pubSub/pubSub.module';
 import { Timestamp } from './utils/scalars/timestamp.scalar';
 import { OptimizeModule } from './optimize/optimize.module';
 import { BullModule } from '@nestjs/bull';
+import { ChargeModule } from './charge/charge.module';
 
 @Module({
   imports: [
@@ -74,7 +75,10 @@ import { BullModule } from '@nestjs/bull';
         EMAIL_USER: Joi.string().required(),
         EMAIL_PASSWORD: Joi.string().required(),
         GRAPHQL_PLAYGROUND: Joi.number(),
-        TWO_FACTOR_AUTHENTICATION_APP_NAME: Joi.string()
+        TWO_FACTOR_AUTHENTICATION_APP_NAME: Joi.string(),
+        STRIPE_SECRET_KEY: Joi.string(),
+        STRIPE_CURRENCY: Joi.string(),
+        FRONTEND_URL: Joi.string(),
       })
     }),
     DatabaseModule,
@@ -89,7 +93,8 @@ import { BullModule } from '@nestjs/bull';
     EmailSchedulingModule,
     ChatModule,
     PubSubModule,
-    OptimizeModule
+    OptimizeModule,
+    ChargeModule
   ],
   controllers: [],
   providers: [Timestamp],

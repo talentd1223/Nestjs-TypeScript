@@ -5,6 +5,7 @@ const mockedUser: User = {
   email: 'user@email.com',
   name: 'John',
   password: 'hash',
+  stripeCustomerId: 'stripe_customer_id',
   address: {
     id: 1,
     street: 'streetName',
