@@ -21,6 +21,7 @@ import { Timestamp } from './utils/scalars/timestamp.scalar';
 import { OptimizeModule } from './optimize/optimize.module';
 import { BullModule } from '@nestjs/bull';
 import { ChargeModule } from './charge/charge.module';
+import { CreditCardsModule } from './credit-cards/creditCards.module';
 
 @Module({
   imports: [
@@ -94,7 +95,8 @@ import { ChargeModule } from './charge/charge.module';
     ChatModule,
     PubSubModule,
     OptimizeModule,
-    ChargeModule
+    ChargeModule,
+    CreditCardsModule
   ],
   controllers: [],
   providers: [Timestamp],
