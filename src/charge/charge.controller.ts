@@ -13,6 +13,6 @@ export default class ChargeController {
   @Post()
   @UseGuards(JwtAuthenticationGuard)
   async createCharge(@Body() charge: CreateChargeDto, @Req() request: RequestWithUser) {
-    await this.stripeService.charge(charge.amount, charge.paymentMethodId, request.user.stripeCustomerId);
+    return this.stripeService.charge(charge.amount, charge.paymentMethodId, request.user.stripeCustomerId);
   }
 }
