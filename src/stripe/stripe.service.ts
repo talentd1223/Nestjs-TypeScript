@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, BadRequestException, InternalServerErrorException, NotFoundException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
 import StripeError from '../utils/stripeError.enum';
@@ -83,7 +83,8 @@ export default class StripeService {
   public async listSubscriptions(priceId: string, customerId: string,) {
     return this.stripe.subscriptions.list({
       customer: customerId,
-      price: priceId
+      price: priceId,
+      expand: ['data.latest_invoice', 'data.latest_invoice.payment_intent']
     })
   }
 }
