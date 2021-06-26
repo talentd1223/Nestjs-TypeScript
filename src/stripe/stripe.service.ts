@@ -1,6 +1,7 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException, InternalServerErrorException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Stripe from 'stripe';
+import StripeError from '../utils/stripeError.enum';
 
 @Injectable()
 export default class StripeService {
@@ -39,10 +40,50 @@ export default class StripeService {
     })
   }
 
+  public async setDefaultCreditCard(paymentMethodId: string, customerId: string) {
+    try {
+      return await this.stripe.customers.update(customerId, {
+        invoice_settings: {
+          default_payment_method: paymentMethodId
+        }
+      })
+    } catch (error) {
+      if (error?.type === StripeError.InvalidRequest) {
+        throw new BadRequestException('Wrong credit card chosen');
+      }
+      throw new InternalServerErrorException();
+    }
+  }
+
   public async listCreditCards(customerId: string) {
     return this.stripe.paymentMethods.list({
       customer: customerId,
       type: 'card',
     });
+  }
+
+  public async createSubscription(priceId: string, customerId: string,) {
+    try {
+      return await this.stripe.subscriptions.create({
+        customer: customerId,
+        items: [
+          {
+            price: priceId
+          }
+        ]
+      })
+    } catch (error) {
+      if (error?.code === StripeError.ResourceMissing) {
+        throw new BadRequestException('Credit card not set up');
+      }
+      throw new InternalServerErrorException();
+    }
+  }
+
+  public async listSubscriptions(priceId: string, customerId: string,) {
+    return this.stripe.subscriptions.list({
+      customer: customerId,
+      price: priceId
+    })
   }
 }
