@@ -83,6 +83,7 @@ import { StripeWebhookModule } from './stripeWebhook/stripeWebhook.module';
         STRIPE_CURRENCY: Joi.string(),
         FRONTEND_URL: Joi.string(),
         MONTHLY_SUBSCRIPTION_PRICE_ID: Joi.string(),
+        STRIPE_WEBHOOK_SECRET: Joi.string()
       })
     }),
     DatabaseModule,
