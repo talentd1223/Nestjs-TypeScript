@@ -24,6 +24,7 @@ import { ChargeModule } from './charge/charge.module';
 import { CreditCardsModule } from './credit-cards/creditCards.module';
 import { SubscriptionsModule } from './subscriptions/subscriptions.module';
 import { StripeWebhookModule } from './stripeWebhook/stripeWebhook.module';
+import { EmailConfirmationModule } from './emailConfirmation/emailConfirmation.module';
 
 @Module({
   imports: [
@@ -83,7 +84,10 @@ import { StripeWebhookModule } from './stripeWebhook/stripeWebhook.module';
         STRIPE_CURRENCY: Joi.string(),
         FRONTEND_URL: Joi.string(),
         MONTHLY_SUBSCRIPTION_PRICE_ID: Joi.string(),
-        STRIPE_WEBHOOK_SECRET: Joi.string()
+        STRIPE_WEBHOOK_SECRET: Joi.string(),
+        JWT_VERIFICATION_TOKEN_SECRET: Joi.string().required(),
+        JWT_VERIFICATION_TOKEN_EXPIRATION_TIME: Joi.string().required(),
+        EMAIL_CONFIRMATION_URL: Joi.string().required(),
       })
     }),
     DatabaseModule,
@@ -102,7 +106,8 @@ import { StripeWebhookModule } from './stripeWebhook/stripeWebhook.module';
     ChargeModule,
     CreditCardsModule,
     SubscriptionsModule,
-    StripeWebhookModule
+    StripeWebhookModule,
+    EmailConfirmationModule
   ],
   controllers: [],
   providers: [Timestamp],
