@@ -2,13 +2,14 @@ import { Controller, Post, Headers, Req, BadRequestException } from '@nestjs/com
 import StripeService from '../stripe/stripe.service';
 import RequestWithRawBody from './requestWithRawBody.interface';
 import { UsersService } from '../users/users.service';
-import Stripe from 'stripe';
+import StripeWebhookService from './stripeWebhook.service';
 
 @Controller('webhook')
 export default class StripeWebhookController {
   constructor(
     private readonly stripeService: StripeService,
-    private readonly usersService: UsersService
+    private readonly usersService: UsersService,
+    private readonly stripeWebhookService: StripeWebhookService
   ) {}
 
   @Post()
@@ -23,12 +24,7 @@ export default class StripeWebhookController {
     const event = await this.stripeService.constructEventFromPayload(signature, request.rawBody);
 
     if (event.type === 'customer.subscription.updated' || event.type === 'customer.subscription.created') {
-      const data = event.data.object as Stripe.Subscription;
-
-      const customerId: string = data.customer as string;
-      const subscriptionStatus = data.status;
-
-      await this.usersService.updateMonthlySubscriptionStatus(customerId, subscriptionStatus)
+      return this.stripeWebhookService.processSubscriptionUpdate(event);
     }
   }
 }
