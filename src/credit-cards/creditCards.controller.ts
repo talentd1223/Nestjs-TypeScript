@@ -4,6 +4,7 @@ import RequestWithUser from '../authentication/requestWithUser.interface';
 import StripeService from '../stripe/stripe.service';
 import AddCreditCardDto from './dto/addCreditCardDto';
 import SetDefaultCreditCardDto from './dto/setDefaultCreditCard.dto';
+import { EmailConfirmationGuard } from '../emailConfirmation/emailConfirmation.guard';
 
 @Controller('credit-cards')
 export default class CreditCardsController {
@@ -25,6 +26,7 @@ export default class CreditCardsController {
   }
 
   @Get()
+  @UseGuards(EmailConfirmationGuard)
   @UseGuards(JwtAuthenticationGuard)
   async getCreditCards(@Req() request: RequestWithUser) {
     return this.stripeService.listCreditCards(request.user.stripeCustomerId);
