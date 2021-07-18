@@ -17,7 +17,7 @@ export default class SmsService {
     this.twilioClient = new Twilio(accountSid, authToken);
   }
 
-  async initiatePhoneNumberVerification(phoneNumber: string) {
+  initiatePhoneNumberVerification(phoneNumber: string) {
     const serviceSid = this.configService.get('TWILIO_VERIFICATION_SERVICE_SID');
 
     return this.twilioClient.verify.services(serviceSid)
