@@ -91,7 +91,8 @@ import { SmsModule } from './sms/sms.module';
         EMAIL_CONFIRMATION_URL: Joi.string().required(),
         TWILIO_ACCOUNT_SID: Joi.string().required(),
         TWILIO_AUTH_TOKEN: Joi.string().required(),
-        TWILIO_VERIFICATION_SERVICE_SID: Joi.string().required()
+        TWILIO_VERIFICATION_SERVICE_SID: Joi.string().required(),
+        TWILIO_SENDER_PHONE_NUMBER: Joi.string().required()
       })
     }),
     DatabaseModule,
