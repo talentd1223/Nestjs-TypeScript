@@ -13,6 +13,9 @@ class User {
   public email: string;
 
   @Column()
+  public phoneNumber: string;
+
+  @Column()
   public name: string;
 
   @Column()
@@ -59,6 +62,9 @@ class User {
 
   @Column({ default: false })
   public isEmailConfirmed: boolean;
+
+  @Column({ default: false })
+  public isPhoneNumberConfirmed: boolean;
 }
 
 export default User;
