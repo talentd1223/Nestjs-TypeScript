@@ -59,6 +59,19 @@ export class UsersService {
     return newUser;
   }
 
+  async createWithGoogle(email: string, name: string) {
+    const stripeCustomer = await this.stripeService.createCustomer(name, email);
+
+    const newUser = await this.usersRepository.create({
+      email,
+      name,
+      isRegisteredWithGoogle: true,
+      stripeCustomerId: stripeCustomer.id
+    });
+    await this.usersRepository.save(newUser);
+    return newUser;
+  }
+
   async addAvatar(userId: number, imageBuffer: Buffer, filename: string) {
     const user = await this.getById(userId);
     if (user.avatar) {

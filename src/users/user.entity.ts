@@ -12,15 +12,18 @@ class User {
   @Column({ unique: true })
   public email: string;
 
-  @Column()
-  public phoneNumber: string;
+  @Column({ nullable: true })
+  public phoneNumber?: string;
 
   @Column()
   public name: string;
 
-  @Column()
+  @Column({ nullable: true })
   @Exclude()
-  public password: string;
+  public password?: string;
+
+  @Column({ default: false })
+  public isRegisteredWithGoogle: boolean;
 
   @OneToOne(() => Address, {
     eager: true,
