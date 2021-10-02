@@ -1,4 +1,4 @@
-import { CACHE_MANAGER, Inject, Injectable } from '@nestjs/common';
+import { CACHE_MANAGER, Inject, Injectable, Logger } from '@nestjs/common';
 import CreatePostDto from './dto/createPost.dto';
 import Post from './post.entity';
 import UpdatePostDto from './dto/updatePost.dto';
@@ -13,6 +13,8 @@ import { GET_POSTS_CACHE_KEY } from './postsCacheKey.constant';
 
 @Injectable()
 export default class PostsService {
+  private readonly logger = new Logger(PostsService.name)
+
   constructor(
     @InjectRepository(Post)
     private postsRepository: Repository<Post>,
@@ -64,6 +66,7 @@ export default class PostsService {
     if (post) {
       return post;
     }
+    this.logger.warn('Tried to access a post that does not exist');
     throw new PostNotFoundException(id);
   }
 
