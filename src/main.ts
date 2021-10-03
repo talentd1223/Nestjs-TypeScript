@@ -5,12 +5,13 @@ import { ValidationPipe } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { config } from 'aws-sdk';
 import rawBodyMiddleware from './utils/rawBody.middleware';
-import getLogLevels from './utils/getLogLevels';
+import CustomLogger from './logger/customLogger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
-    logger: getLogLevels(process.env.NODE_ENV === 'production')
+    bufferLogs: true,
   });
+  app.useLogger(app.get(CustomLogger));
   app.useGlobalPipes(new ValidationPipe({
     transform: true
   }));

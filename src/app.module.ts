@@ -28,6 +28,7 @@ import { EmailConfirmationModule } from './emailConfirmation/emailConfirmation.m
 import { SmsModule } from './sms/sms.module';
 import { GoogleAuthenticationModule } from './googleAuthentication/googleAuthentication.module';
 import LogsMiddleware from './utils/logs.middleware';
+import { LoggerModule } from './logger/logger.module';
 
 @Module({
   imports: [
@@ -118,7 +119,8 @@ import LogsMiddleware from './utils/logs.middleware';
     StripeWebhookModule,
     EmailConfirmationModule,
     SmsModule,
-    GoogleAuthenticationModule
+    GoogleAuthenticationModule,
+    LoggerModule
   ],
   controllers: [],
   providers: [Timestamp],

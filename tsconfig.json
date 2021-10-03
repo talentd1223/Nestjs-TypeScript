@@ -12,7 +12,8 @@
     "incremental": true,
     "alwaysStrict": true,
     "noImplicitAny": true,
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true
   },
   "exclude": ["node_modules", "dist"]
 }

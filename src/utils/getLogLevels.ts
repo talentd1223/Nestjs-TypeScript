@@ -2,9 +2,9 @@ import { LogLevel } from '@nestjs/common/services/logger.service';
 
 function getLogLevels(isProduction: boolean): LogLevel[] {
   if (isProduction) {
-    return ['log', 'error', 'warn'];
+    return ['log', 'warn', 'error'];
   }
-  return ['log', 'error', 'warn', 'debug', 'verbose'];
+  return ['error', 'warn', 'log', 'verbose', 'debug'];
 }
 
 export default getLogLevels;
