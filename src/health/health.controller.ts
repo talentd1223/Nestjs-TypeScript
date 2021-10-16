@@ -6,6 +6,7 @@ import {
   MemoryHealthIndicator,
   DiskHealthIndicator,
 } from '@nestjs/terminus';
+import { ElasticsearchHealthIndicator } from './elasticsearchHealthIndicator';
 
 
 @Controller('health')
@@ -14,7 +15,8 @@ class HealthController {
     private healthCheckService: HealthCheckService,
     private typeOrmHealthIndicator: TypeOrmHealthIndicator,
     private memoryHealthIndicator: MemoryHealthIndicator,
-    private diskHealthIndicator: DiskHealthIndicator
+    private diskHealthIndicator: DiskHealthIndicator,
+    private elasticsearchHealthIndicator: ElasticsearchHealthIndicator
   ) {}
 
   @Get()
@@ -29,7 +31,8 @@ class HealthController {
       // the used disk storage should not exceed the 50% of the available space
       () => this.diskHealthIndicator.checkStorage('disk health', {
         thresholdPercent: 0.5, path: '/'
-      })
+      }),
+      () => this.elasticsearchHealthIndicator.isHealthy('elasticsearch')
     ]);
   }
 }
