@@ -86,6 +86,10 @@
                                 <a href="#deleteCategory" >deleteCategory</a>
                             </li>
                             <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#deleteCategoryById" class="deprecated-name">deleteCategoryById</a>
+                            </li>
+                            <li>
                                 <a href="#getAllCategories" >getAllCategories</a>
                             </li>
                             <li>
@@ -108,54 +112,6 @@
     </table>
 </section>
 
-            <section>
-    <h3 id="constructor">Constructor</h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-<code>constructor(categoriesRepository: <a href="../classes/Category.html" target="_self">Repository&lt;Category&gt;</a>)</code>
-                    </td>
-                </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/categories/categories.service.ts:10</a></div>
-                            </td>
-                        </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                            <div>
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>categoriesRepository</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="../classes/Category.html" target="_self" >Repository&lt;Category&gt;</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-</section>
 
             <section>
     
@@ -184,8 +140,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="28"
-                            class="link-to-prism">src/categories/categories.service.ts:28</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="42"
+                            class="link-to-prism">src/categories/categories.service.ts:42</a></div>
                 </td>
             </tr>
 
@@ -255,8 +211,91 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="43"
-                            class="link-to-prism">src/categories/categories.service.ts:43</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="71"
+                            class="link-to-prism">src/categories/categories.service.ts:71</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>A method that deletes a category from the database</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>id</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>An id of a category. A category with this id should exist in the database</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deleteCategoryById"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span class="deprecated-name"><b>deleteCategoryById</b></span>
+                        <a href="#deleteCategoryById"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4 deprecated">
+                    Use deleteCategory instead
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>deleteCategoryById(id: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="63"
+                            class="link-to-prism">src/categories/categories.service.ts:63</a></div>
                 </td>
             </tr>
 
@@ -294,7 +333,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
 
                     </div>
                     <div class="io-description">
@@ -324,17 +363,25 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="16"
-                            class="link-to-prism">src/categories/categories.service.ts:16</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="24"
+                            class="link-to-prism">src/categories/categories.service.ts:24</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>A method that fetches the categories from the database</p>
+</div>
 
+                    <div>
+                    </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                        <b>Returns : </b>        <code><a href="../classes/Category.html" target="_self" >Promise&lt;Category[]&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>A promise with the list of categories</p>
 
                     </div>
                 </td>
@@ -363,14 +410,17 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="20"
-                            class="link-to-prism">src/categories/categories.service.ts:20</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="34"
+                            class="link-to-prism">src/categories/categories.service.ts:34</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>A method that fetches a category with a given id. Example:</p>
+<p>const category = await categoriesService.getCategoryById(1);</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -400,9 +450,13 @@
                         </table>
                     </div>
                     <div>
+                        <b>Example :</b>
+                        <div>
+                            <pre class="line-numbers"><code class="language-html">const category = await categoriesService.getCategoryById(1);</code></pre>
+                        </div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>unknown</code>
+                        <b>Returns : </b>        <code><a href="../classes/Category.html" target="_self" >Promise&lt;Category&gt;</a></code>
 
                     </div>
                     <div class="io-description">
@@ -434,14 +488,16 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="34"
-                            class="link-to-prism">src/categories/categories.service.ts:34</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="51"
+                            class="link-to-prism">src/categories/categories.service.ts:51</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>See the <a href="../classes/UpdateCategoryDto.html">definition of the UpdateCategoryDto file</a> to see a list of required properties</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -485,7 +541,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>unknown</code>
+                        <b>Returns : </b>        <code><a href="../classes/Category.html" target="_self" >Promise&lt;Category&gt;</a></code>
 
                     </div>
                     <div class="io-description">
@@ -511,16 +567,30 @@ import CategoryNotFoundException from &#x27;./exceptions/categoryNotFound.except
 
 @Injectable()
 export default class CategoriesService {
+
+  /**
+   * @ignore
+   */
   constructor(
     @InjectRepository(Category)
     private categoriesRepository: Repository&lt;Category&gt;
   ) {}
 
-  getAllCategories() {
+  /**
+   * A method that fetches the categories from the database
+   * @returns A promise with the list of categories
+   */
+  getAllCategories(): Promise&lt;Category[]&gt; {
     return this.categoriesRepository.find({ relations: [&#x27;posts&#x27;] });
   }
 
-  async getCategoryById(id: number) {
+  /**
+   * A method that fetches a category with a given id. Example:
+   *
+   * @example
+   * const category &#x3D; await categoriesService.getCategoryById(1);
+   */
+  async getCategoryById(id: number): Promise&lt;Category&gt; {
     const category &#x3D; await this.categoriesRepository.findOne(id, { relations: [&#x27;posts&#x27;] });
     if (category) {
       return category;
@@ -534,7 +604,10 @@ export default class CategoriesService {
     return newCategory;
   }
 
-  async updateCategory(id: number, category: UpdateCategoryDto) {
+  /**
+   * See the [definition of the UpdateCategoryDto file]{@link UpdateCategoryDto} to see a list of required properties
+   */
+  async updateCategory(id: number, category: UpdateCategoryDto): Promise&lt;Category&gt; {
     await this.categoriesRepository.update(id, category);
     const updatedCategory &#x3D; await this.categoriesRepository.findOne(id, { relations: [&#x27;posts&#x27;] });
     if (updatedCategory) {
@@ -543,7 +616,18 @@ export default class CategoriesService {
     throw new CategoryNotFoundException(id);
   }
 
-  async deleteCategory(id: number) {
+  /**
+   * @deprecated Use deleteCategory instead
+   */
+  async deleteCategoryById(id: number): Promise&lt;void&gt; {
+    return this.deleteCategory(id);
+  }
+
+  /**
+   * A method that deletes a category from the database
+   * @param id An id of a category. A category with this id should exist in the database
+   */
+  async deleteCategory(id: number): Promise&lt;void&gt; {
     const deleteResponse &#x3D; await this.categoriesRepository.delete(id);
     if (!deleteResponse.affected) {
       throw new CategoryNotFoundException(id);
