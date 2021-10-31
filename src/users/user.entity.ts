@@ -1,8 +1,8 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, RelationId } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import Address from './address.entity';
 import Post from '../posts/post.entity';
-import PublicFile from '../files/publicFile.entity';
+import DatabaseFile from '../databaseFiles/databaseFile.entity';
 
 @Entity()
 class User {
@@ -35,15 +35,17 @@ class User {
   @OneToMany(() => Post, (post: Post) => post.author)
   public posts?: Post[];
 
-  @JoinColumn()
+  @JoinColumn({ name: 'avatarId' })
   @OneToOne(
-    () => PublicFile,
+    () => DatabaseFile,
     {
-      eager: true,
       nullable: true
     }
   )
-  public avatar?: PublicFile;
+  public avatar?: DatabaseFile;
+
+  @Column({ nullable: true })
+  public avatarId?: number;
 
   @Column({
     nullable: true

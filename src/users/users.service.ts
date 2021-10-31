@@ -3,16 +3,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, Connection, In } from 'typeorm';
 import User from './user.entity';
 import CreateUserDto from './dto/createUser.dto';
-import { FilesService } from '../files/files.service';
 import * as bcrypt from 'bcrypt';
 import StripeService from '../stripe/stripe.service';
+import DatabaseFilesService from '../databaseFiles/databaseFiles.services';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
-    private readonly filesService: FilesService,
+    private readonly databaseFilesService: DatabaseFilesService,
     private connection: Connection,
     private stripeService: StripeService
   ) {}
@@ -73,43 +73,11 @@ export class UsersService {
   }
 
   async addAvatar(userId: number, imageBuffer: Buffer, filename: string) {
-    const user = await this.getById(userId);
-    if (user.avatar) {
-      await this.usersRepository.update(userId, {
-        ...user,
-        avatar: null
-      });
-      await this.filesService.deletePublicFile(user.avatar.id);
-    }
-    const avatar = await this.filesService.uploadPublicFile(imageBuffer, filename);
+    const avatar = await this.databaseFilesService.uploadDatabaseFile(imageBuffer, filename);
     await this.usersRepository.update(userId, {
-      ...user,
       avatar
     });
     return avatar;
-  }
-
-  async deleteAvatar(userId: number) {
-    const queryRunner = this.connection.createQueryRunner();
-    const user = await this.getById(userId);
-    const fileId = user.avatar?.id;
-    if (fileId) {
-      await queryRunner.connect();
-      await queryRunner.startTransaction();
-      try {
-        await queryRunner.manager.update(User, userId, {
-          ...user,
-          avatar: null
-        });
-        await this.filesService.deletePublicFileWithQueryRunner(fileId, queryRunner);
-        await queryRunner.commitTransaction();
-      } catch (error) {
-        await queryRunner.rollbackTransaction();
-        throw new InternalServerErrorException();
-      } finally {
-        await queryRunner.release();
-      }
-    }
   }
 
   async setCurrentRefreshToken(refreshToken: string, userId: number) {
