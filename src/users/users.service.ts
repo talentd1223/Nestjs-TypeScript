@@ -72,7 +72,7 @@ export class UsersService {
     return newUser;
   }
 
-  async addAvatar(userId: number, imageBuffer: Buffer, filename: string) {
+  async addAvatar(userId: number, fileData: LocalFileDto) {
     const queryRunner = this.connection.createQueryRunner();
 
     await queryRunner.connect();

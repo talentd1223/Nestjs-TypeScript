@@ -2,8 +2,8 @@ import { UsersService } from './users.service';
 import { Controller, Post, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import JwtAuthenticationGuard from '../authentication/jwt-authentication.guard';
 import RequestWithUser from '../authentication/requestWithUser.interface';
-import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
+import LocalFilesInterceptor from '../interceptors/LocalFilesInterceptor';
 
 @Controller('users')
 export class UsersController {
@@ -13,8 +13,12 @@ export class UsersController {
 
   @Post('avatar')
   @UseGuards(JwtAuthenticationGuard)
-  @UseInterceptors(FileInterceptor('file'))
+  @UseInterceptors(LocalFilesInterceptor)
   async addAvatar(@Req() request: RequestWithUser, @UploadedFile() file: Express.Multer.File) {
-    return this.usersService.addAvatar(request.user.id, file.buffer, file.originalname);
+    return this.usersService.addAvatar(request.user.id, {
+      path: file.path,
+      filename: file.originalname,
+      mimetype: file.mimetype
+    });
   }
 }
