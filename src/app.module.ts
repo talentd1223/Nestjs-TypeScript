@@ -31,6 +31,7 @@ import LogsMiddleware from './utils/logs.middleware';
 import { LoggerModule } from './logger/logger.module';
 import HealthModule from './health/health.module';
 import { DatabaseFilesModule } from './databaseFiles/databaseFiles.module';
+import { LocalFilesModule } from './localFiles/localFiles.module';
 
 @Module({
   imports: [
@@ -125,7 +126,8 @@ import { DatabaseFilesModule } from './databaseFiles/databaseFiles.module';
     GoogleAuthenticationModule,
     LoggerModule,
     HealthModule,
-    DatabaseFilesModule
+    DatabaseFilesModule,
+    LocalFilesModule
   ],
   controllers: [],
   providers: [Timestamp],

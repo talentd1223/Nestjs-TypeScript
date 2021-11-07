@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule } from '@nestjs/config';
 import LocalFile from './localFile.entity';
 import LocalFilesService from './localFiles.service';
+import LocalFilesController from './localFiles.controller';
 
 @Module({
   imports: [
@@ -11,6 +12,6 @@ import LocalFilesService from './localFiles.service';
   ],
   providers: [LocalFilesService],
   exports: [LocalFilesService],
-  controllers: []
+  controllers: [LocalFilesController]
 })
 export class LocalFilesModule {}
