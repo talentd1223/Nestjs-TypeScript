@@ -6,6 +6,7 @@ import CreateUserDto from './dto/createUser.dto';
 import * as bcrypt from 'bcrypt';
 import StripeService from '../stripe/stripe.service';
 import DatabaseFilesService from '../databaseFiles/databaseFiles.services';
+import LocalFilesService from '../localFiles/localFiles.service';
 
 @Injectable()
 export class UsersService {
@@ -14,7 +15,8 @@ export class UsersService {
     private usersRepository: Repository<User>,
     private readonly databaseFilesService: DatabaseFilesService,
     private connection: Connection,
-    private stripeService: StripeService
+    private stripeService: StripeService,
+    private localFilesService: LocalFilesService
   ) {}
 
   async updateMonthlySubscriptionStatus(
@@ -73,32 +75,10 @@ export class UsersService {
   }
 
   async addAvatar(userId: number, fileData: LocalFileDto) {
-    const queryRunner = this.connection.createQueryRunner();
-
-    await queryRunner.connect();
-    await queryRunner.startTransaction();
-
-    try {
-      const user = await queryRunner.manager.findOne(User, userId);
-      const currentAvatarId = user.avatarId;
-      const avatar = await this.databaseFilesService.uploadDatabaseFileWithQueryRunner(imageBuffer, filename, queryRunner);
-      await queryRunner.manager.update(User, userId, {
-        avatarId: avatar.id
-      });
-
-      if (currentAvatarId) {
-        await this.databaseFilesService.deleteFileWithQueryRunner(currentAvatarId, queryRunner);
-      }
-
-      await queryRunner.commitTransaction();
-
-      return avatar;
-    } catch {
-      await queryRunner.rollbackTransaction();
-      throw new InternalServerErrorException();
-    } finally {
-      await queryRunner.release();
-    }
+    const avatar = await this.localFilesService.saveLocalFileData(fileData);
+    await this.usersRepository.update(userId, {
+      avatarId: avatar.id
+    })
   }
 
   async setCurrentRefreshToken(refreshToken: string, userId: number) {

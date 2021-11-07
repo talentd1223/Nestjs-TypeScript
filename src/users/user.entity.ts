@@ -1,8 +1,8 @@
-import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn, RelationId } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Exclude } from 'class-transformer';
 import Address from './address.entity';
 import Post from '../posts/post.entity';
-import DatabaseFile from '../databaseFiles/databaseFile.entity';
+import LocalFile from '../localFiles/localFile.entity';
 
 @Entity()
 class User {
@@ -37,12 +37,12 @@ class User {
 
   @JoinColumn({ name: 'avatarId' })
   @OneToOne(
-    () => DatabaseFile,
+    () => LocalFile,
     {
       nullable: true
     }
   )
-  public avatar?: DatabaseFile;
+  public avatar?: LocalFile;
 
   @Column({ nullable: true })
   public avatarId?: number;

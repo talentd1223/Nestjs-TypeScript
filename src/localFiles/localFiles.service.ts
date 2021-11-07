@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import LocalFile from './localFile.entity';
@@ -10,18 +10,10 @@ class LocalFilesService {
     private localFilesRepository: Repository<LocalFile>,
   ) {}
 
-  async uploadLocalFile(fileData: LocalFileDto) {
+  async saveLocalFileData(fileData: LocalFileDto) {
     const newFile = await this.localFilesRepository.create(fileData)
     await this.localFilesRepository.save(newFile);
     return newFile;
-  }
-
-  async getFileById(fileId: number) {
-    const file = await this.localFilesRepository.findOne(fileId);
-    if (!file) {
-      throw new NotFoundException();
-    }
-    return file;
   }
 }
 

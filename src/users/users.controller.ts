@@ -3,7 +3,7 @@ import { Controller, Post, Req, UploadedFile, UseGuards, UseInterceptors } from 
 import JwtAuthenticationGuard from '../authentication/jwt-authentication.guard';
 import RequestWithUser from '../authentication/requestWithUser.interface';
 import { Express } from 'express';
-import LocalFilesInterceptor from '../interceptors/LocalFilesInterceptor';
+import LocalFilesInterceptor from '../localFiles/localFiles.interceptor';
 
 @Controller('users')
 export class UsersController {
@@ -13,7 +13,10 @@ export class UsersController {
 
   @Post('avatar')
   @UseGuards(JwtAuthenticationGuard)
-  @UseInterceptors(LocalFilesInterceptor)
+  @UseInterceptors(LocalFilesInterceptor({
+    fieldName: 'file',
+    path: '/avatars'
+  }))
   async addAvatar(@Req() request: RequestWithUser, @UploadedFile() file: Express.Multer.File) {
     return this.usersService.addAvatar(request.user.id, {
       path: file.path,
