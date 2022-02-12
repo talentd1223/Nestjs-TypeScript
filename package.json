@@ -40,6 +40,7 @@
     "@nestjs/platform-express": "^8.0.9",
     "@nestjs/platform-socket.io": "^8.0.9",
     "@nestjs/schedule": "^1.0.1",
+    "@nestjs/swagger": "^5.2.0",
     "@nestjs/terminus": "^8.0.1",
     "@nestjs/typeorm": "^8.0.2",
     "@nestjs/websockets": "^8.0.9",
@@ -97,6 +98,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^7.3.1",
     "stripe": "^8.154.0",
+    "swagger-ui-express": "^4.3.0",
     "twilio": "^3.66.0",
     "typeorm": "^0.2.38",
     "uuid": "^8.3.0"
