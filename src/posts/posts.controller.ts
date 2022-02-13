@@ -12,6 +12,7 @@ import {
   ClassSerializerInterceptor,
   Query, CacheKey, CacheTTL,
 } from '@nestjs/common';
+import PostEntity from './post.entity';
 import PostsService from './posts.service';
 import CreatePostDto from './dto/createPost.dto';
 import UpdatePostDto from './dto/updatePost.dto';
@@ -21,8 +22,10 @@ import { PaginationParams } from '../utils/types/paginationParams';
 import { HttpCacheInterceptor } from './httpCache.interceptor';
 import { GET_POSTS_CACHE_KEY } from './postsCacheKey.constant';
 import JwtTwoFactorGuard from '../authentication/jwt-two-factor.guard';
+import { ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
 @Controller('posts')
+@ApiTags('posts')
 @UseInterceptors(ClassSerializerInterceptor)
 export default class PostsController {
   constructor(
@@ -44,6 +47,21 @@ export default class PostsController {
   }
 
   @Get(':id')
+  @ApiParam({
+    name: 'id',
+    required: true,
+    description: 'Should be an id of a post that exists in the database',
+    type: Number
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'A post has been successfully fetched',
+    type: PostEntity
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'A post with given id does not exist.'
+  })
   getPostById(@Param() { id }: FindOneParams) {
     return this.postsService.getPostById(Number(id));
   }
